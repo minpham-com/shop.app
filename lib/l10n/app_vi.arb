@@ -1,0 +1,21 @@
+{
+  "message_success": "Thành công",
+  "message_error": "Lỗi",
+  "message_information": "Thông tin",
+  
+  "login_start": "Bên dưới là danh sách chuỗi đăng nhập ",
+  "login_et_user_email": "Nhập email",
+  "login_et_user_password": "Nhập mật khẩu",
+  "login_btn_forgot_password": "Quên mật khẩu?",
+  "login_btn_sign_in": "Đăng nhập",
+  "login_error_fill_fields": "Hãy nhập tất cả các trường",
+  "login_end": "------------------------------------------------------------------------------------",
+
+  "home_start": "Bên dưới là danh sách chuỗi trang chủ",
+  "home_tv_posts": "Bài viết",
+  "home_tv_error": "Lỗi",
+  "home_tv_no_post_found": "Không có bài viết nào",
+  "home_tv_choose_language": "Chọn ngôn ngữ",
+  "home_end": "-------------------------------------------------------------------------------------"
+
+}
