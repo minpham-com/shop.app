@@ -1,0 +1,131 @@
+name: store
+description: Min store app.
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# Read more about versioning at semver.org.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_localizations:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: any
+
+  # The following adds the shared pref as a dependency in your application
+  shared_preferences: any
+
+  # A composable, Future-based library for making HTTP requests.
+  dio: any
+
+  # Flogs, a powerful logging framework
+  logger: any
+
+  # String validation and sanitization for Dart. Dart 2-compatible version of validator
+  validators: any
+
+  # A flexible widget for user notification. Customize your text, button, duration, animations
+  # and much more. For Android devs, it is made to replace Snackbars and Toasts.
+  another_flushbar: any
+
+  # Material Dialog
+  material_dialog: any
+
+  #multi language
+  intl: any
+
+  # for dependency injection
+  get_it: any
+
+  #database
+  firebase_core: any
+  firebase_remote_config: any
+  firebase_analytics: any
+  firebase_database: any
+
+  #google font
+  google_fonts: any
+
+  #trace error
+  sentry_flutter: any
+
+  #read env variable
+  envied: any
+  flutter_bloc: any
+  equatable: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_driver:
+    sdk: flutter
+  # The following adds the launcher icon support to your application.
+  # run below mentioned commands to generate launcher icons
+  # flutter packages get
+  # flutter packages pub run flutter_launcher_icons:main
+  flutter_launcher_icons: any
+  build_runner: any
+  analyzer: any
+  lint: any
+  mockito: any
+  envied_generator: any
+  path: any
+  
+flutter_icons:
+  image_path: "assets/icons/ic_launcher.png"
+  android: true
+  ios: true
+
+# For information on the generic Dart art of this file, see the
+# following page: https://www.dartlang.org/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+  # The following line to make our application will auto generate l10n files
+  generate: true
+  
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/fonts/
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.io/assets-and-images/#resolution-aware.
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.io/assets-and-images/#from-packages
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  fonts:
+    - family: ProductSans
+      fonts:
+        - asset: assets/fonts/Product-Sans-Regular.ttf
+        - asset: assets/fonts/Product-Sans-Italic.ttf
+          style: italic
+        - asset: assets/fonts/Product-Sans-Bold.ttf
+          weight: 700
+
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.io/custom-fonts/#from-packages

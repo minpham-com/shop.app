@@ -1,0 +1,58 @@
+name: Tests
+on:
+  push:
+    branches:
+      - develop
+      - mainz
+  pull_request:
+
+# Declare default permissions as read only.
+permissions: read-all
+
+jobs:
+  unit-test:
+    name: Tests on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      # Set up Flutter.
+      - name: Clone Flutter repository with stable channel
+        uses: minpham-com/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter doctor -v
+
+      # Checkout code and get packages.
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install packages
+        run: flutter pub get
+      
+      - name: Setup enviroment
+        run: cp .env.example .env
+
+      - name: Generate Internationalizing
+        run: flutter gen-l10n
+        
+      - name: Build runner
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+
+      # Analyze, check formatting, and run unit tests.
+      - name: Flutter analyze
+        run: flutter analyze
+
+      - name: Ensure the Dart code is formatted correctly
+        run: dart format -o none --set-exit-if-changed .
+
+      - name: Run Flutter unit tests
+        run: flutter test
+
+      - name: Upload goldens if tests fail
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: goldens
+          path: test/goldens/failures/
