@@ -2,9 +2,14 @@ import 'package:logger/logger.dart';
 import 'package:store/services/base_service.dart';
 
 class LogService extends BaseService {
-  late final Logger _log;
-  LogService() {
-    _log = Logger();
+  late final Logger _log = Logger();
+
+  static final LogService _instance = LogService();
+  // constructor
+  LogService();
+
+  static LogService getInstance() {
+    return _instance;
   }
 
   Logger getLogger() {

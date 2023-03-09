@@ -1,12 +1,20 @@
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:store/data/models/base_model.dart';
 
-class Product extends BaseModel {
-  int? id;
+part 'product.g.dart';
 
+@HiveType(typeId: 1)
+class Product extends BaseModel {
+  @HiveField(0)
+  String? id;
+
+  @HiveField(1)
   int? userId;
 
+  @HiveField(2)
   String? title;
 
+  @HiveField(3)
   String? body;
 
   Product({
@@ -17,7 +25,7 @@ class Product extends BaseModel {
   });
 
   factory Product.fromMap(Map<String, dynamic> json) => Product(
-        id: json["id"] as int,
+        id: json["id"] as String,
         userId: json["userId"] as int,
         title: json["title"] as String,
         body: json["body"] as String,

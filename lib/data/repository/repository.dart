@@ -1,36 +1,32 @@
 import 'dart:async';
-
-import 'package:store/services/locator_service.dart';
 import 'package:store/services/shared_preference_helper.dart';
 
 class Repository {
   final String _endpoint;
   // shared pref object
-  final SharedPreferenceHelper _prefs = getIt<SharedPreferenceHelper>();
-
+  final SharedPreferenceHelper _helper = SharedPreferenceHelper.getInstance();
   // constructor
   Repository(this._endpoint);
-
   // Login:---------------------------------------------------------------------
   Future<bool> login(String email, String password) async {
     return Future.delayed(const Duration(seconds: 2), () => true);
   }
 
   Future<void> saveIsLoggedIn({required bool value}) =>
-      _prefs.saveIsLoggedIn(value);
+      _helper.saveIsLoggedIn(value);
 
-  Future<bool> get isLoggedIn => _prefs.isLoggedIn;
+  Future<bool> get isLoggedIn => _helper.isLoggedIn;
 
   // Theme: --------------------------------------------------------------------
   Future<void> changeBrightnessToDark({required bool value}) =>
-      _prefs.changeBrightnessToDark(value);
+      _helper.changeBrightnessToDark(value);
 
-  bool get isDarkMode => _prefs.isDarkMode;
+  Future<bool> get isDarkMode => _helper.isDarkMode;
 
   // Language: -----------------------------------------------------------------
-  Future<void> changeLanguage(String value) => _prefs.changeLanguage(value);
+  Future<void> changeLanguage(String value) => _helper.changeLanguage(value);
 
-  String? get currentLanguage => _prefs.currentLanguage;
+  Future<String?> get currentLanguage => _helper.currentLanguage;
 
   String get endpoint => _endpoint;
 }

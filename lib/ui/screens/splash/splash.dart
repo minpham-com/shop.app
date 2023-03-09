@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:store/services/constants/preferences.dart';
 import 'package:store/env/assets.dart';
+import 'package:store/services/constants/preferences.dart';
 import 'package:store/ui/routes/routes.dart';
 import 'package:store/ui/widgets/app_icon_widget.dart';
 

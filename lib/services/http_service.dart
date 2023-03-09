@@ -1,25 +1,33 @@
 import 'package:dio/dio.dart';
-import 'package:logger/logger.dart';
-import 'package:store/env/env_key.dart';
-import 'package:store/services/firebase_service.dart';
-import 'package:store/services/locator_service.dart';
+import 'package:store/env/env.dart';
+import 'package:store/services/base_service.dart';
+import 'package:store/services/log_service.dart';
 import 'package:store/services/shared_preference_helper.dart';
 
-class HttpService {
+class HttpService extends BaseService {
+  static final HttpService _instance = HttpService._();
+  // constructor
+  HttpService._() {
+    _client = getDefaultClient();
+  }
+
+  static HttpService getInstance() {
+    return _instance;
+  }
+
   // dio instance
   late final Dio _client;
   static const String TAG = "HttpService";
-  final Logger _log = getIt<Logger>();
-  final FirebaseService _firebaseService = getIt<FirebaseService>();
-  final SharedPreferenceHelper _pref = getIt<SharedPreferenceHelper>();
+  final LogService _log = LogService.getInstance();
+  final SharedPreferenceHelper _helper = SharedPreferenceHelper.getInstance();
   // injecting dio instance
-  HttpService(Dio? client) {
-    client ??= getDefaultClient();
+  Dio setClient(Dio client) {
     _client = client;
+    return client;
   }
 
   Dio getDefaultClient() {
-    final String apiUri = _firebaseService.getString(EnvKey.apiUri) as String;
+    final String apiUri = Env.apiUri;
     final BaseOptions options = BaseOptions(
         baseUrl: apiUri,
         connectTimeout: const Duration(seconds: 15000),
@@ -37,7 +45,7 @@ class HttpService {
       InterceptorsWrapper(onRequest:
           (RequestOptions options, RequestInterceptorHandler handler) async {
         // getting token
-        final String? token = await _pref.accessToken;
+        final String? token = await _helper.accessToken;
 
         if (token != null) {
           options.headers.putIfAbsent('Authorization', () => token);
@@ -68,7 +76,7 @@ class HttpService {
   }
 
   Future<bool?> refreshToken() async {
-    final String? refreshToken = await _pref.refreshToken;
+    final String? refreshToken = await _helper.refreshToken;
 
     if (refreshToken != null) {
       try {
@@ -78,8 +86,8 @@ class HttpService {
         final Map<String, dynamic> data = response.data as Map<String, dynamic>;
         final String accessToken = data['access_token'] as String;
         final String newRefreshToken = data['refresh_token'] as String;
-        await _pref.saveAccessToken(accessToken);
-        await _pref.saveRefreshToken(newRefreshToken);
+        await _helper.saveAccessToken(accessToken);
+        await _helper.saveRefreshToken(newRefreshToken);
         return true;
       } catch (err) {
         _log.e("$TAG:refreshToken", [err]);
@@ -103,7 +111,7 @@ class HttpService {
   }
 
   // Get:-----------------------------------------------------------------------
-  Future<dynamic> get(
+  Future<Response> get(
     String uri, {
     Map<String, dynamic>? queryParameters,
     Options? options,
@@ -118,7 +126,7 @@ class HttpService {
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
       );
-      return response.data;
+      return response;
     } catch (e) {
       _log.e("$TAG:get", [e]);
       rethrow;
@@ -126,7 +134,7 @@ class HttpService {
   }
 
   // Post:----------------------------------------------------------------------
-  Future<dynamic> post(
+  Future<Response> post(
     String uri, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
@@ -145,7 +153,7 @@ class HttpService {
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
       );
-      return response.data;
+      return response;
     } catch (e) {
       _log.e("$TAG:post", [e]);
       rethrow;
@@ -153,7 +161,7 @@ class HttpService {
   }
 
   // Put:-----------------------------------------------------------------------
-  Future<dynamic> put(
+  Future<Response> put(
     String uri, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
@@ -172,7 +180,7 @@ class HttpService {
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
       );
-      return response.data;
+      return response;
     } catch (e) {
       _log.e("$TAG:put", [e]);
       rethrow;
@@ -180,7 +188,7 @@ class HttpService {
   }
 
   // Delete:--------------------------------------------------------------------
-  Future<dynamic> delete(
+  Future<Response> delete(
     String uri, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
@@ -197,7 +205,7 @@ class HttpService {
         options: options,
         cancelToken: cancelToken,
       );
-      return response.data;
+      return response;
     } catch (e) {
       _log.e("$TAG:delete", [e]);
       rethrow;

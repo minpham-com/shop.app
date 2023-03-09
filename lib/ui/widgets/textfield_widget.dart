@@ -19,28 +19,30 @@ class TextFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: padding,
-      child: TextFormField(
-        controller: textController,
-        focusNode: focusNode,
-        onFieldSubmitted: onFieldSubmitted,
-        onChanged: onChanged,
-        autofocus: autoFocus,
-        textInputAction: inputAction,
-        obscureText: isObscure,
-        maxLength: 25,
-        keyboardType: inputType,
-        style: Theme.of(context).textTheme.bodyLarge,
-        decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: hintColor),
-            errorText: errorText,
-            counterText: '',
-            icon: isIcon ? Icon(icon, color: iconColor) : null),
+    return Scaffold(
+      body: Padding(
+        padding: padding,
+        child: TextFormField(
+          controller: textController,
+          focusNode: focusNode,
+          onFieldSubmitted: onFieldSubmitted,
+          onChanged: onChanged,
+          autofocus: autoFocus,
+          textInputAction: inputAction,
+          obscureText: isObscure,
+          maxLength: 25,
+          keyboardType: inputType,
+          style: Theme.of(context).textTheme.bodyLarge,
+          decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(color: hintColor),
+              errorText: errorText,
+              counterText: '',
+              icon: isIcon ? Icon(icon, color: iconColor) : null),
+        ),
       ),
     );
   }

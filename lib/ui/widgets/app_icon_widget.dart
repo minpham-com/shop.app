@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AppIconWidget extends StatelessWidget {
   final String image;
@@ -16,10 +17,16 @@ class AppIconWidget extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.portrait;
     //calculating container width
     final double imageSize = (portrait ? size.width : size.height) * 0.20;
+    final bool isSvg = image.isNotEmpty && image.endsWith('.svg');
 
-    return Image.asset(
-      image,
-      height: imageSize,
-    );
+    return isSvg
+        ? SvgPicture.asset(
+            image,
+            height: imageSize,
+          )
+        : Image.asset(
+            image,
+            height: imageSize,
+          );
   }
 }

@@ -6,11 +6,11 @@ on:
       environment:
         description: "Environment to deploy web build"
         required: true
-        default: "staging"
+        default: "stagings"
         type: choice
         options:
-          - staging
-          - prod
+          - stagings
+          - prods
 
 # Declare default permissions as read only.
 permissions: read-all
