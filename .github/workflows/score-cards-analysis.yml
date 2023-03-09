@@ -13,6 +13,7 @@ jobs:
   analysis:
     name: Score cards analysis
     runs-on: ubuntu-latest
+    environment: testing
     permissions:
       # Needed to upload the results to code-scanning dashboard.
       security-events: write

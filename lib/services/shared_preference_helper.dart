@@ -5,13 +5,17 @@ import 'package:store/services/constants/preferences.dart';
 import 'package:store/services/locator_service.dart';
 
 class SharedPreferenceHelper extends BaseService {
+  static final SharedPreferenceHelper _instance = SharedPreferenceHelper._();
   // shared pref instance
   final SharedPreferences _pref = getIt<SharedPreferences>();
 
   // constructor
-  SharedPreferenceHelper();
+  SharedPreferenceHelper._();
 
-  // General Methods: ----------------------------------------------------------
+  static SharedPreferenceHelper getInstance() {
+    return _instance;
+  }
+
   Future<String?> get accessToken async {
     return _pref.getString(Preferences.access_token);
   }

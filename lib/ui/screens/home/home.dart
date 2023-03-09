@@ -10,7 +10,6 @@ import 'package:store/business/bloc/product/product_state.dart';
 import 'package:store/business/bloc/theme/theme_bloc.dart';
 import 'package:store/business/bloc/theme/theme_state.dart';
 import 'package:store/services/constants/preferences.dart';
-import 'package:store/services/locator_service.dart';
 import 'package:store/ui/routes/routes.dart';
 import 'package:store/ui/widgets/progress_indicator_widget.dart';
 
@@ -24,9 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider<ProductBloc>(create: (_) => getIt<ProductBloc>()),
-          BlocProvider<ThemeBloc>(create: (_) => getIt<ThemeBloc>()),
-          BlocProvider<LanguageBloc>(create: (_) => getIt<LanguageBloc>()),
+          BlocProvider<ProductBloc>(create: (_) => ProductBloc()),
+          BlocProvider<ThemeBloc>(create: (_) => ThemeBloc()),
+          BlocProvider<LanguageBloc>(create: (_) => LanguageBloc()),
         ],
         child:
             BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {

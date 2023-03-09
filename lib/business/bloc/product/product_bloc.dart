@@ -11,7 +11,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   // repository instance
   late final ProductRepository _repository = getIt<ProductRepository>();
   // store for handling errors
-  final ErrorBloc errorBloc = getIt<ErrorBloc>();
+  final ErrorBloc errorBloc = ErrorBloc();
 
   ProductBloc() : super(ProductState(true, false, []));
 

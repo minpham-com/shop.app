@@ -13,6 +13,7 @@ jobs:
   unit-test:
     name: Tests on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    environment: testing
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -32,7 +33,7 @@ jobs:
         run: flutter pub get
       
       - name: Setup enviroment
-        run: cp .env.example .env
+        run: echo ${ secrets.ENV } .env
 
       - name: Generate Internationalizing
         run: flutter gen-l10n

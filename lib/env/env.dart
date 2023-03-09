@@ -55,4 +55,8 @@ abstract class Env {
   @EnviedField(varName: 'SENTRY_DSN', obfuscate: true)
   // ignore: avoid_dynamic_calls
   static final String sentryDsn = _Env.sentryDsn;
+
+  @EnviedField(varName: 'API_URI', obfuscate: true)
+  // ignore: avoid_dynamic_calls
+  static final String apiUri = _Env.apiUri;
 }

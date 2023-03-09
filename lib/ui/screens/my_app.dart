@@ -10,7 +10,6 @@ import 'package:store/business/bloc/theme/theme_bloc.dart';
 import 'package:store/business/bloc/user/user_bloc.dart';
 import 'package:store/env/app_theme.dart';
 import 'package:store/env/env.dart';
-import 'package:store/services/locator_service.dart';
 import 'package:store/ui/routes/routes.dart';
 import 'package:store/ui/screens/home/home.dart';
 import 'package:store/ui/screens/login/login.dart';
@@ -20,11 +19,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AppBloc>(create: (_) => getIt<AppBloc>()),
-        BlocProvider<ErrorBloc>(create: (_) => getIt<ErrorBloc>()),
-        BlocProvider<ThemeBloc>(create: (_) => getIt<ThemeBloc>()),
-        BlocProvider<LanguageBloc>(create: (_) => getIt<LanguageBloc>()),
-        BlocProvider<UserBloc>(create: (_) => getIt<UserBloc>()),
+        BlocProvider<AppBloc>(create: (_) => AppBloc()),
+        BlocProvider<ErrorBloc>(create: (_) => ErrorBloc()),
+        BlocProvider<ThemeBloc>(create: (_) => ThemeBloc()),
+        BlocProvider<LanguageBloc>(create: (_) => LanguageBloc()),
+        BlocProvider<UserBloc>(create: (_) => UserBloc()),
       ],
       child: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {

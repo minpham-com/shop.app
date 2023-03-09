@@ -1,25 +1,33 @@
 import 'package:dio/dio.dart';
-import 'package:logger/logger.dart';
-import 'package:store/env/env_key.dart';
-import 'package:store/services/firebase_service.dart';
-import 'package:store/services/locator_service.dart';
+import 'package:store/env/env.dart';
+import 'package:store/services/base_service.dart';
+import 'package:store/services/log_service.dart';
 import 'package:store/services/shared_preference_helper.dart';
 
-class HttpService {
+class HttpService extends BaseService {
+  static final HttpService _instance = HttpService._();
+  // constructor
+  HttpService._() {
+    _client = getDefaultClient();
+  }
+
+  static HttpService getInstance() {
+    return _instance;
+  }
+
   // dio instance
   late final Dio _client;
   static const String TAG = "HttpService";
-  final Logger _log = getIt<Logger>();
-  final FirebaseService _firebaseService = getIt<FirebaseService>();
-  final SharedPreferenceHelper _pref = getIt<SharedPreferenceHelper>();
+  final LogService _log = LogService.getInstance();
+  final SharedPreferenceHelper _pref = SharedPreferenceHelper.getInstance();
   // injecting dio instance
-  HttpService(Dio? client) {
-    client ??= getDefaultClient();
+  Dio setClient(Dio client) {
     _client = client;
+    return client;
   }
 
   Dio getDefaultClient() {
-    final String apiUri = _firebaseService.getString(EnvKey.apiUri) as String;
+    final String apiUri = Env.apiUri;
     final BaseOptions options = BaseOptions(
         baseUrl: apiUri,
         connectTimeout: const Duration(seconds: 15000),

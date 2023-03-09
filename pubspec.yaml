@@ -64,6 +64,10 @@ dependencies:
   envied: any
   flutter_bloc: any
   equatable: any
+  objectbox: any
+  objectbox_flutter_libs: any
+  path: any
+  path_provider: any
 
 dev_dependencies:
   flutter_test:
@@ -81,8 +85,8 @@ dev_dependencies:
   lint: any
   mockito: any
   envied_generator: any
-  path: any
-  
+  objectbox_generator: any
+
 flutter_icons:
   image_path: "assets/icons/ic_launcher.png"
   android: true

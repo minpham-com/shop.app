@@ -18,12 +18,31 @@ class LoginState {
   bool get hasErrorInForgotPassword => _userEmail != null;
 
   // ignore: avoid_positional_boolean_parameters
-  LoginState() {
-    _userEmail = null;
-    _password = null;
-    _confirmPassword = null;
-    _success = false;
-    _loading = false;
+  LoginState(
+      {String? email,
+      String? password,
+      String? confirmPassword,
+      bool? success,
+      bool? loading}) {
+    _userEmail = email;
+    _password = password;
+    _confirmPassword = confirmPassword;
+    _success = success!;
+    _loading = loading!;
+  }
+
+  LoginState copyWith(
+      {String? userEmail,
+      String? password,
+      String? confirmPassword,
+      bool? success,
+      bool? loading}) {
+    return LoginState(
+        email: userEmail ?? _userEmail,
+        password: password ?? _password,
+        confirmPassword: confirmPassword ?? _confirmPassword,
+        success: success ?? _success,
+        loading: loading ?? _loading);
   }
 
   String? get userEmail => _userEmail;

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:store/services/locator_service.dart';
 import 'package:store/services/shared_preference_helper.dart';
 
@@ -7,10 +6,8 @@ class Repository {
   final String _endpoint;
   // shared pref object
   final SharedPreferenceHelper _prefs = getIt<SharedPreferenceHelper>();
-
   // constructor
   Repository(this._endpoint);
-
   // Login:---------------------------------------------------------------------
   Future<bool> login(String email, String password) async {
     return Future.delayed(const Duration(seconds: 2), () => true);

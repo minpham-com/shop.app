@@ -11,7 +11,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   late final UserRepository _repository = getIt<UserRepository>();
 
   // store for handling error messages
-  final ErrorBloc _errorBag = getIt<ErrorBloc>();
+  final ErrorBloc _errorBag = ErrorBloc();
 
   // constructor:---------------------------------------------------------------
   UserBloc() : super(UserState.initial());

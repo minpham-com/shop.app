@@ -1,5 +1,7 @@
+import 'package:objectbox/objectbox.dart';
 import 'package:store/data/models/base_model.dart';
 
+@Entity()
 class User extends BaseModel {
   int? id;
 

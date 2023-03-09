@@ -16,6 +16,9 @@
   "home_tv_error": "Lỗi",
   "home_tv_no_post_found": "Không có bài viết nào",
   "home_tv_choose_language": "Chọn ngôn ngữ",
-  "home_end": "-------------------------------------------------------------------------------------"
+  "home_end": "-------------------------------------------------------------------------------------",
+  "email_invalid": "Email không hợp lệ",
+  "password_invalid": "Mật khẩu không hợp lệ",
+  "please_fill_all_fields": "Hãy nhập tất cả các trường được yêu cầu"
 
 }
