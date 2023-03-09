@@ -2,12 +2,12 @@ import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store/business/bloc/form/login/login_bloc.dart';
 import 'package:store/business/bloc/form/login/login_state.dart';
 import 'package:store/business/bloc/theme/theme_bloc.dart';
-import 'package:store/services/constants/preferences.dart';
 import 'package:store/env/assets.dart';
+import 'package:store/services/constants/preferences.dart';
+import 'package:store/services/shared_preference_service.dart';
 import 'package:store/ui/routes/routes.dart';
 import 'package:store/ui/widgets/app_icon_widget.dart';
 import 'package:store/ui/widgets/empty_app_bar_widget.dart';
@@ -85,20 +85,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildRightSide(BuildContext context, LoginState state) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const AppIconWidget(image: 'assets/icons/ic_appicon.png'),
-            const SizedBox(height: 24.0),
-            _buildUserIdField(context, state),
-            _buildPasswordField(context, state),
-            _buildForgotPasswordButton(context, state),
-            _buildSignInButton(context, state)
-          ],
-        ),
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const AppIconWidget(image: 'assets/icons/ic_appicon.png'),
+          const SizedBox(height: 24.0),
+          _buildUserIdField(context, state),
+          _buildPasswordField(context, state),
+          _buildForgotPasswordButton(context, state),
+          _buildSignInButton(context, state)
+        ],
       ),
     );
   }
@@ -106,12 +104,12 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildUserIdField(BuildContext context, LoginState state) {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        final bloc = BlocProvider.of<LoginBloc>(context);
+        final bloc = context.read<LoginBloc>();
         return TextFieldWidget(
           hint: AppLocalizations.of(context)!.login_et_user_email,
           inputType: TextInputType.emailAddress,
           icon: Icons.person,
-          iconColor: BlocProvider.of<ThemeBloc>(context).darkMode
+          iconColor: context.read<ThemeBloc>().darkMode
               ? Colors.white70
               : Colors.black54,
           textController: _userEmailController,
@@ -122,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
           onFieldSubmitted: (dynamic value) {
             FocusScope.of(context).requestFocus(_passwordFocusNode);
           },
-          errorText: "Email invalid",
+          errorText: AppLocalizations.of(context)!.email_invalid,
         );
       },
     );
@@ -141,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
           iconColor: theme.darkMode ? Colors.white70 : Colors.black54,
           textController: _passwordController,
           focusNode: _passwordFocusNode,
-          errorText: "Password invalid",
+          errorText: AppLocalizations.of(context)!.password_invalid,
           onChanged: (dynamic value) {
             bloc.setPassword(_passwordController.text);
           },
@@ -156,8 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: TextButton(
         style: TextButton.styleFrom(
           shape: const StadiumBorder(),
-          // ignore: use_named_constants
-          padding: const EdgeInsets.all(0),
+          padding: EdgeInsets.zero,
         ),
         child: Text(
           AppLocalizations.of(context)!.login_btn_forgot_password,
@@ -182,7 +179,8 @@ class _LoginScreenState extends State<LoginScreen> {
             DeviceUtils.hideKeyboard(context);
             bloc.login();
           } else {
-            _showErrorMessage(context, state, 'Please fill in all fields');
+            _showErrorMessage(context, state,
+                AppLocalizations.of(context)!.please_fill_all_fields);
           }
         },
       );
@@ -190,9 +188,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget navigate(BuildContext context) {
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.setBool(Preferences.is_logged_in, true);
-    });
+    SharedPreferenceService.getInstance()
+        .setBool(key: Preferences.is_logged_in, value: true);
 
     // ignore: use_named_constants
     Future.delayed(const Duration(), () {
@@ -207,8 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
   SizedBox _showErrorMessage(
       BuildContext context, LoginState state, String message) {
     if (message.isNotEmpty) {
-      // ignore: use_named_constants
-      Future.delayed(const Duration(), () {
+      Future.delayed(Duration.zero, () {
         if (message.isNotEmpty) {
           FlushbarHelper.createError(
             message: message,

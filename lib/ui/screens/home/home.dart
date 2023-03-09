@@ -2,15 +2,12 @@ import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import "package:flutter_gen/gen_l10n/app_localizations.dart";
-import 'package:material_dialog/material_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:store/business/bloc/language/language_bloc.dart';
 import 'package:store/business/bloc/product/product_bloc.dart';
 import 'package:store/business/bloc/product/product_state.dart';
 import 'package:store/business/bloc/theme/theme_bloc.dart';
 import 'package:store/business/bloc/theme/theme_state.dart';
 import 'package:store/services/constants/preferences.dart';
-import 'package:store/services/locator_service.dart';
 import 'package:store/ui/routes/routes.dart';
 import 'package:store/ui/widgets/progress_indicator_widget.dart';
 
@@ -24,17 +21,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider<ProductBloc>(create: (_) => getIt<ProductBloc>()),
-          BlocProvider<ThemeBloc>(create: (_) => getIt<ThemeBloc>()),
-          BlocProvider<LanguageBloc>(create: (_) => getIt<LanguageBloc>()),
+          BlocProvider<ProductBloc>(create: (_) => ProductBloc()),
         ],
-        child:
-            BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
-          return Scaffold(
-            appBar: _buildAppBar(context),
-            body: _buildBody(context),
-          );
-        }));
+        child: BlocBuilder<ProductBloc, ProductState>(
+          builder: (context, state) {
+            return Scaffold(
+              appBar: _buildAppBar(context),
+              body: _buildBody(context),
+            );
+          },
+        ));
   }
 
   PreferredSizeWidget _buildAppBar(BuildContext context) {
@@ -152,16 +148,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _handleErrorMessage() {
-    return BlocBuilder<ProductBloc, ProductState>(
-      builder: (context, state) {
-        return const SizedBox.shrink();
-      },
-    );
+    return const SizedBox.shrink();
   }
 
   // ignore: unused_element
   SizedBox _showErrorMessage(BuildContext context, String message) {
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(Duration.zero, () {
       if (message.isNotEmpty) {
         FlushbarHelper.createError(
           message: message,
@@ -174,52 +166,39 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _buildLanguageDialog(BuildContext context) {
-    final LanguageBloc bloc = BlocProvider.of<LanguageBloc>(context);
-    final ThemeBloc theme = BlocProvider.of<ThemeBloc>(context);
     _showDialog<String>(
-      context: context,
-      child: MaterialDialog(
-        borderRadius: 5.0,
-        enableFullWidth: true,
-        title: Text(
-          AppLocalizations.of(context)!.home_tv_choose_language,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 16.0,
-          ),
-        ),
-        headerColor: Theme.of(context).primaryColor,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        closeButtonColor: Colors.white,
-        enableCloseButton: true,
-        onCloseButtonClicked: () {
-          Navigator.of(context).pop();
-        },
-        children: bloc.supports
-            .map(
-              (object) => ListTile(
-                dense: true,
-                contentPadding: const EdgeInsets.all(1.0),
-                title: Text(
-                  object.language!,
-                  style: TextStyle(
-                    color: bloc.locale == object.locale
-                        ? Theme.of(context).primaryColor
-                        : theme.darkMode
-                            ? Colors.white
-                            : Colors.black,
+        context: context,
+        child: Dialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0)), //this right here
+          child: SizedBox(
+            height: 200,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const TextField(
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'What do you want to remember?'),
                   ),
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  // change user language based on selected locale
-                  bloc.changeLanguage(object.locale!);
-                },
+                  SizedBox(
+                    width: 320.0,
+                    child: TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        "Save",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  )
+                ],
               ),
-            )
-            .toList(),
-      ),
-    );
+            ),
+          ),
+        ));
   }
 
   void _showDialog<T>({required BuildContext context, required Widget child}) {

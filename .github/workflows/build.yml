@@ -13,6 +13,7 @@ jobs:
   build:
     name: Build ${{ matrix.target }}
     runs-on: macos-latest
+    environment: developz
     strategy:
       fail-fast: false
       matrix:
@@ -38,7 +39,7 @@ jobs:
         run: flutter pub get
 
       - name: Setup enviroment
-        run: cp .env.example .env
+        run: echo ${ secrets.ENV } > .env
 
       - name: Generate Internationalizing
         run: flutter gen-l10n

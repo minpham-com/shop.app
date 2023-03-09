@@ -10,6 +10,7 @@ abstract class Env {
   // ignore: avoid_dynamic_calls
   static final String appName = _Env.appName;
 
+  /*
   //The ofuscate flag lets you make your variables more
   // secure through obfuscation
   @EnviedField(varName: 'FIREBASE_ANDROID_PROJECT_ID', obfuscate: true)
@@ -51,8 +52,13 @@ abstract class Env {
   @EnviedField(varName: 'FIREBASE_IOS_CLIENT_ID', obfuscate: true)
   // ignore: avoid_dynamic_calls
   static final String firebaseIosClientId = _Env.firebaseIosClientId;
+  */
 
   @EnviedField(varName: 'SENTRY_DSN', obfuscate: true)
   // ignore: avoid_dynamic_calls
   static final String sentryDsn = _Env.sentryDsn;
+
+  @EnviedField(varName: 'API_URI', obfuscate: true)
+  // ignore: avoid_dynamic_calls
+  static final String apiUri = _Env.apiUri;
 }

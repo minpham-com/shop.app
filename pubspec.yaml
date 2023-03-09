@@ -39,9 +39,6 @@ dependencies:
   # and much more. For Android devs, it is made to replace Snackbars and Toasts.
   another_flushbar: any
 
-  # Material Dialog
-  material_dialog: any
-
   #multi language
   intl: any
 
@@ -63,7 +60,14 @@ dependencies:
   #read env variable
   envied: any
   flutter_bloc: any
+  flutter_svg: any
+  hydrated_bloc: any
   equatable: any
+  hive: any
+  hive_flutter: any
+  path: any
+  path_provider: any
+  
 
 dev_dependencies:
   flutter_test:
@@ -81,8 +85,8 @@ dev_dependencies:
   lint: any
   mockito: any
   envied_generator: any
-  path: any
-  
+  hive_generator: any
+
 flutter_icons:
   image_path: "assets/icons/ic_launcher.png"
   android: true

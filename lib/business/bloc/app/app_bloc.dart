@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:store/business/bloc/app/app_event.dart';
 import 'package:store/business/bloc/app/app_state.dart';
-import 'package:store/services/locator_service.dart';
 import 'package:store/services/log_service.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
@@ -11,8 +10,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppFinishing>(_finishing);
     on<AppFinished>(_finished);
   }
+
   static const String TAG = "AppBloc";
-  final LogService _log = getIt<LogService>();
+  final LogService _log = LogService.getInstance();
 
   Future<void> _starting(AppStarting event, Emitter<AppState> emit) async {
     _log.d("$TAG _starting");

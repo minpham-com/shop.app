@@ -1,9 +1,9 @@
-import 'dart:io' show Platform;
+//import 'dart:io' show Platform;
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:store/env/env.dart';
+//import 'package:store/env/env.dart';
 import 'package:store/env/env_key.dart';
 import 'package:store/services/base_service.dart';
 
@@ -13,8 +13,8 @@ class FirebaseService extends BaseService {
 
   static Future<void> initialize() async {
     Firebase.initializeApp(
-        name: '__app__',
-        options: Platform.isIOS
+      name: '__app__',
+      /*options: Platform.isIOS
             ? FirebaseOptions(
                 apiKey: Env.firebaseIosApiKey,
                 appId: Env.firebaseIosAppId,
@@ -27,7 +27,9 @@ class FirebaseService extends BaseService {
                 apiKey: Env.firebaseAndroidApiKey,
                 appId: Env.firebaseAndroidAppId,
                 messagingSenderId: Env.firebaseAndroidMessageSenderId,
-                projectId: Env.firebaseAndroidProjectId));
+                projectId: Env.firebaseAndroidProjectId)
+          */
+    );
     await setupConfig();
   }
 

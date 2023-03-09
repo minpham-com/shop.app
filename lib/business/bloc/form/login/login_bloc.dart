@@ -10,7 +10,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Future<void> _submit(LoginSubmit event, Emitter<LoginState> emit) async {
-    emit(LoginState());
+    emit(state);
   }
 
   Future<void> _logout(LoginOut event, Emitter<LoginState> emit) async {
@@ -49,7 +49,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future login() async {}
 
-  void setEmail(String? email) {}
+  void setEmail(String? email) {
+    add(LoginChangeFormEvent(email: email));
+  }
 
-  void setPassword(String? email) {}
+  void setPassword(String? password) {
+    add(LoginChangeFormEvent(password: password));
+  }
 }
