@@ -1,9 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:store/business/bloc/base_event.dart';
 import 'package:store/business/bloc/language/language_event.dart';
 import 'package:store/business/bloc/language/language_state.dart';
-import 'package:store/data/models/language.dart';
+import 'package:store/data/entities/language.dart';
 
-class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
+class LanguageBloc extends Bloc<BaseEvent, LanguageState> {
   // supported languages
   List<Language> supports = [
     Language(code: 'US', locale: 'en', language: 'English'),

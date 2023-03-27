@@ -1,24 +1,34 @@
-import 'package:equatable/equatable.dart';
-import 'package:store/data/models/product.dart';
+import 'package:store/business/bloc/base_event.dart';
+import 'package:store/data/entities/product.dart';
 
-class ProductEvent extends Equatable {
-  // ignore: unused_field
-  final bool _success;
+abstract class ProductEvent extends BaseEvent {}
 
-  // ignore: unused_field
-  final bool _loading;
+class ProductStateEvent extends ProductEvent {
+  final bool success;
 
-  // ignore: unused_field
-  final List<Product>? _items;
-  // ignore: avoid_positional_boolean_parameters
-  const ProductEvent(this._success, this._loading, this._items);
+  ProductStateEvent({this.success = true});
 
   @override
-  List<Object?> get props => [_success, _loading, _items];
+  List<Object> get props => [success];
+}
 
-  bool get success => _success;
+class ProductLoadingEvent extends ProductEvent {
+  final bool loading;
 
-  bool get loading => _loading;
+  ProductLoadingEvent({required this.loading});
 
-  List<Product>? get items => _items;
+  @override
+  List<Object> get props => [loading];
+}
+
+class ProductListEvent extends ProductEvent {
+  final List<Product> items;
+  final int count;
+  final int offset;
+  final int limit;
+
+  ProductListEvent(this.items, this.count, this.offset, this.limit);
+
+  @override
+  List<Object> get props => [items, count, offset, limit];
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:logger/logger.dart';
 import 'package:store/services/base_service.dart';
 
@@ -17,31 +19,31 @@ class LogService extends BaseService {
   }
 
   void v(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    _log.v(message, error, stackTrace);
+    _log.v(jsonEncode(message), error, stackTrace);
   }
 
   /// Log a message at level [Level.debug].
   void d(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    _log.d(message, error, stackTrace);
+    _log.d(jsonEncode(message), error, stackTrace);
   }
 
   /// Log a message at level [Level.info].
   void i(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    _log.i(message, error, stackTrace);
+    _log.i(jsonEncode(message), error, stackTrace);
   }
 
   /// Log a message at level [Level.warning].
   void w(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    _log.w(message, error, stackTrace);
+    _log.w(jsonEncode(message), error, stackTrace);
   }
 
   /// Log a message at level [Level.error].
   void e(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    _log.e(message, error, stackTrace);
+    _log.e(jsonEncode(message), error, stackTrace);
   }
 
   /// Log a message at level [Level.wtf].
   void wtf(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    _log.wtf(message, error, stackTrace);
+    _log.wtf(jsonEncode(message), error, stackTrace);
   }
 }

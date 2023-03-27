@@ -1,9 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:store/business/bloc/app/app_event.dart';
 import 'package:store/business/bloc/app/app_state.dart';
+import 'package:store/business/bloc/base_event.dart';
 import 'package:store/services/log_service.dart';
 
-class AppBloc extends Bloc<AppEvent, AppState> {
+class AppBloc extends Bloc<BaseEvent, AppState> {
   AppBloc() : super(AppState()) {
     on<AppStarting>(_starting);
     on<AppStarted>(_started);

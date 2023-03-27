@@ -1,20 +1,20 @@
-import 'package:store/data/models/base_model.dart';
+import 'package:store/data/entities/base_object.dart';
 import 'package:store/data/repository/repository.dart';
 import 'package:store/services/data/base_source_service.dart';
 import 'package:store/services/data/box_source_service.dart';
 
-class AppRepository<T extends BaseModel> extends Repository {
-  final BaseSourceService _service = BoxSourceService<T>();
+class AppRepository<T extends BaseObject> extends Repository {
+  final BaseSourceService<T> _service = BoxSourceService<T>();
   AppRepository(String endpoint) : super(endpoint) {
     _service.setEnpoint(endpoint);
   }
 
   Future<List<T>?> getItems() async {
-    return _service.getItems() as Future<List<T>?>;
+    return _service.getItems();
   }
 
   Future<List<T>?> findBy(String key) async {
-    return _service.findBy(key) as Future<List<T>?>;
+    return _service.findBy(key);
   }
 
   Future<void> updateOrCreate(String? key, T item) async {
@@ -33,5 +33,5 @@ class AppRepository<T extends BaseModel> extends Repository {
     return _service.deleteAll(keys);
   }
 
-  BaseSourceService get service => _service;
+  BaseSourceService<T> get service => _service;
 }

@@ -1,11 +1,10 @@
-import 'package:store/data/models/base_model.dart';
+import 'package:store/data/entities/base_object.dart';
 import 'package:store/services/box_service.dart';
 import 'package:store/services/data/base_source_service.dart';
-import 'package:store/services/locator_service.dart';
 
-class BoxSourceService<T extends BaseModel> implements BaseSourceService<T> {
+class BoxSourceService<T extends BaseObject> implements BaseSourceService<T> {
   late String __endpoint;
-  final BoxService _service = getIt<BoxService>();
+  final BoxService _service = BoxService.getInstance();
 
   @override
   void setEnpoint(String endpoint) {
@@ -13,51 +12,40 @@ class BoxSourceService<T extends BaseModel> implements BaseSourceService<T> {
   }
 
   @override
-  Future<void> delete(String key) {
-    return Future.delayed(Duration.zero, () {
-      _service.getStore<T>(T.toString()).delete(key);
-    });
+  Future<void> delete(String key) async {
+    (await _service.getStore<T>(__endpoint)).delete(key);
   }
 
   @override
-  Future<void> deleteAll(Iterable<String> keys) {
-    return Future.delayed(Duration.zero, () {
-      _service.getStore<T>(T.toString()).deleteAll(keys);
-    });
+  Future<void> deleteAll(Iterable<String> keys) async {
+    (await _service.getStore<T>(__endpoint)).deleteAll(keys);
   }
 
   @override
-  Future<List<T>?> findBy(String key) {
-    return Future.delayed(Duration.zero, () {
-      final List<T> list = [];
-      final T? obj = _service.getStore<T>(T.toString()).get(key);
-      if (obj != null) {
-        list.add(obj);
-      }
-      return list;
-    });
+  Future<List<T>?> findBy(String key) async {
+    final List<T> list = [];
+    final T? obj = (await _service.getStore<T>(__endpoint)).get(key);
+    if (obj != null) {
+      list.add(obj);
+    }
+    return list;
   }
 
   @override
-  Future<List<T>?> getItems() {
-    return Future.delayed(Duration.zero, () {
-      return _service.getStore<T>(T.toString()).values as List<T>;
-    });
+  Future<List<T>?> getItems() async {
+    return (await _service.getStore<T>(__endpoint)).values as List<T>;
   }
 
   @override
-  Future<void> updateOrCreate(String? key, T item) {
-    return Future.delayed(Duration.zero, () {
-      _service.getStore<T>(T.toString()).put(key, item);
-    });
+  Future<void> updateOrCreate(String? key, T item) async {
+    (await _service.getStore<T>(__endpoint)).put(key, item);
   }
 
   @override
-  Future<void> updateOrCreateAll(Map<String, T> list) {
-    return Future.delayed(Duration.zero, () {
-      list.forEach((key, item) {
-        _service.getStore<T>(T.toString()).put(key, item);
-      });
+  Future<void> updateOrCreateAll(Map<String, T> list) async {
+    final box = await _service.getStore<T>(__endpoint);
+    list.forEach((key, item) {
+      box.put(key, item);
     });
   }
 

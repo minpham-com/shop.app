@@ -1,23 +1,19 @@
-class UserState {
-  late bool _success;
+import 'package:store/business/bloc/base_state.dart';
 
-  late bool _loading;
+class UserState extends BaseState {
+  final bool success;
 
-  late bool _isLoggedIn;
+  final bool loading;
 
-  UserState() {
-    _success = true;
-    _loading = false;
-    _isLoggedIn = false;
-  }
+  final bool isLoggedIn;
+
+  UserState(
+      {this.success = true, this.loading = false, this.isLoggedIn = false});
 
   factory UserState.initial() {
     return UserState();
   }
 
-  bool get success => _success;
-
-  bool get loading => _loading;
-
-  bool get isLoggedIn => _isLoggedIn;
+  @override
+  List<Object?> get props => [success, loading, isLoggedIn];
 }

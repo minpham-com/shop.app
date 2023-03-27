@@ -1,14 +1,10 @@
-import 'package:equatable/equatable.dart';
+import 'package:store/business/bloc/base_event.dart';
 
-class ThemeEvent extends Equatable {
-  // ignore: unused_field
-  final bool _isDark;
+class ThemeEvent extends BaseEvent {
+  final bool isDark;
 
-  // ignore: avoid_positional_boolean_parameters
-  const ThemeEvent(this._isDark);
+  ThemeEvent({this.isDark = false});
 
   @override
-  List<Object?> get props => [_isDark];
-
-  bool get isDark => _isDark;
+  List<Object?> get props => [isDark];
 }

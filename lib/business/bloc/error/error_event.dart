@@ -1,6 +1,6 @@
-import 'package:equatable/equatable.dart';
+import 'package:store/business/bloc/base_event.dart';
 
-abstract class ErrEvent extends Equatable {
+abstract class ErrEvent extends BaseEvent {
   // ignore: unused_field
   final int _type;
   // ignore: unused_field
@@ -25,7 +25,7 @@ abstract class ErrEvent extends Equatable {
   // ignore: non_constant_identifier_names
   static int EMERGENCY = 8;
 
-  const ErrEvent(this._type, this._message);
+  ErrEvent(this._type, this._message);
 
   @override
   List<Object?> get props => [_type, _message];

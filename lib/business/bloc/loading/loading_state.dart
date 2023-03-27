@@ -1,7 +1,10 @@
-class LoadingState {
-  // ignore: unused_field
-  final bool _loading;
+import 'package:store/business/bloc/base_state.dart';
 
-  // ignore: avoid_positional_boolean_parameters
-  LoadingState(this._loading);
+class LoadingState extends BaseState {
+  final bool loading;
+
+  LoadingState({this.loading = false});
+
+  @override
+  List<Object?> get props => [loading];
 }

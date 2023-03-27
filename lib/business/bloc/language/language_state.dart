@@ -1,9 +1,12 @@
-class LanguageState {
-  // ignore: unused_field
+import 'package:store/business/bloc/base_state.dart';
+
+class LanguageState extends BaseState {
   final String _language;
 
-  // ignore: avoid_positional_boolean_parameters
   LanguageState(this._language);
 
   String get language => _language;
+
+  @override
+  List<Object?> get props => [_language];
 }

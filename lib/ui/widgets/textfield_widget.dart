@@ -12,37 +12,35 @@ class TextFieldWidget extends StatelessWidget {
   final Color hintColor;
   final Color iconColor;
   final FocusNode? focusNode;
-  final ValueChanged? onFieldSubmitted;
-  final ValueChanged? onChanged;
+  final ValueChanged<dynamic>? onFieldSubmitted;
+  final ValueChanged<dynamic>? onChanged;
   final bool autoFocus;
   final TextInputAction? inputAction;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: padding,
-        child: TextFormField(
-          controller: textController,
-          focusNode: focusNode,
-          onFieldSubmitted: onFieldSubmitted,
-          onChanged: onChanged,
-          autofocus: autoFocus,
-          textInputAction: inputAction,
-          obscureText: isObscure,
-          maxLength: 25,
-          keyboardType: inputType,
-          style: Theme.of(context).textTheme.bodyLarge,
-          decoration: InputDecoration(
-              hintText: hint,
-              hintStyle: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(color: hintColor),
-              errorText: errorText,
-              counterText: '',
-              icon: isIcon ? Icon(icon, color: iconColor) : null),
-        ),
+    return Padding(
+      padding: padding,
+      child: TextFormField(
+        controller: textController,
+        focusNode: focusNode,
+        onFieldSubmitted: onFieldSubmitted,
+        onChanged: onChanged,
+        autofocus: autoFocus,
+        textInputAction: inputAction,
+        obscureText: isObscure,
+        maxLength: 25,
+        keyboardType: inputType,
+        style: Theme.of(context).textTheme.bodyLarge,
+        decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: hintColor),
+            errorText: errorText,
+            counterText: '',
+            icon: isIcon ? Icon(icon, color: iconColor) : null),
       ),
     );
   }

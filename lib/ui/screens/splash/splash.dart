@@ -1,18 +1,24 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store/env/assets.dart';
 import 'package:store/services/constants/preferences.dart';
+import 'package:store/services/shared_preference_service.dart';
 import 'package:store/ui/routes/routes.dart';
+import 'package:store/ui/screens/base_page.dart';
+import 'package:store/ui/screens/base_state.dart';
+import 'package:store/ui/screens/mixin_widget.dart';
 import 'package:store/ui/widgets/app_icon_widget.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends BasePage {
+  const SplashScreen({super.key});
+
   @override
   State<StatefulWidget> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends BaseState<SplashScreen>
+    with WidgetMixin<SplashScreen> {
   @override
   void initState() {
     super.initState();
@@ -31,11 +37,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> navigate() async {
-    final SharedPreferences preferences = await SharedPreferences.getInstance();
-    final bool isLogged =
-        preferences.getBool(Preferences.is_logged_in) ?? false;
+    final bool isLogged = await SharedPreferenceService.getInstance()
+            .getBool(Preferences.is_logged_in) ??
+        false;
     final String route = isLogged ? Routes.home : Routes.login;
     if (context.mounted) return;
-    Navigator.of(context).pushReplacementNamed(route);
+    navigateTo(context, route);
   }
 }

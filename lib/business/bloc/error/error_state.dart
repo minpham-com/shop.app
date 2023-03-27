@@ -1,6 +1,7 @@
+import 'package:store/business/bloc/base_state.dart';
 import 'package:store/business/bloc/error/error_event.dart';
 
-class ErrorState<T extends ErrEvent> {
+class ErrorState<T extends ErrEvent> extends BaseState {
   // ignore: unused_field
   final String _message;
   // ignore: unused_field
@@ -12,4 +13,7 @@ class ErrorState<T extends ErrEvent> {
   static int DELAY_DEFAULT = 200;
 
   ErrorState(this._message, this._type);
+
+  @override
+  List<Object?> get props => [_message, _type];
 }

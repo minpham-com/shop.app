@@ -10,7 +10,7 @@ description: Min store app.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.19.0"
+  sdk: ">=3.0.0"
 
 dependencies:
   flutter:
@@ -59,15 +59,35 @@ dependencies:
 
   #read env variable
   envied: any
+
+  #bloc parttern
   flutter_bloc: any
+  
+  #load svg
   flutter_svg: any
-  hydrated_bloc: any
+  
+  #compare object
   equatable: any
+
+  #data local storage
   hive: any
   hive_flutter: any
+
+  #path
   path: any
   path_provider: any
-  
+
+  #save cookie
+  cookie_jar: any
+  dio_cookie_manager: any
+
+  #build object and collection
+  built_value: any
+  built_collection: any
+
+  #json serializable
+  json_annotation: ^4.8.0
+  dio_cache_interceptor: ^3.4.2
 
 dev_dependencies:
   flutter_test:
@@ -80,13 +100,26 @@ dev_dependencies:
   # flutter packages get
   # flutter packages pub run flutter_launcher_icons:main
   flutter_launcher_icons: any
+
   build_runner: any
+
   analyzer: any
+
   lint: any
+
   mockito: any
+
   envied_generator: any
+
   hive_generator: any
 
+  faker: any
+  
+  built_value_generator: any
+
+  json_serializable: any
+
+  
 flutter_icons:
   image_path: "assets/icons/ic_launcher.png"
   android: true
@@ -99,7 +132,7 @@ flutter_icons:
 flutter:
   # The following line to make our application will auto generate l10n files
   generate: true
-  
+  #flutter_svg: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

@@ -1,8 +1,9 @@
-class ThemeState {
-  // ignore: unused_field
-  final bool _isDark;
-  // ignore: avoid_positional_boolean_parameters
-  ThemeState(this._isDark);
+import 'package:store/business/bloc/base_state.dart';
 
-  bool get isDark => _isDark;
+class ThemeState extends BaseState {
+  final bool isDark;
+  ThemeState({this.isDark = false});
+
+  @override
+  List<Object?> get props => [isDark];
 }

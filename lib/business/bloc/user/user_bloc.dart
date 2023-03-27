@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:store/business/bloc/base_event.dart';
 import 'package:store/business/bloc/error/error_bloc.dart';
 import 'package:store/business/bloc/error/error_event.dart';
 import 'package:store/business/bloc/user/user_event.dart';
@@ -6,7 +7,7 @@ import 'package:store/business/bloc/user/user_state.dart';
 import 'package:store/data/repository/user_repository.dart';
 import 'package:store/services/locator_service.dart';
 
-class UserBloc extends Bloc<UserEvent, UserState> {
+class UserBloc extends Bloc<BaseEvent, UserState> {
   // repository instance
   late final UserRepository _repository = getIt<UserRepository>();
 
@@ -22,7 +23,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   bool get isLoggedIn => state.isLoggedIn;
 
-  Future login(String email, String password) async {
+  Future<dynamic> login(String email, String password) async {
     final future = _repository.login(email, password);
     await future.then((value) async {
       if (value) {

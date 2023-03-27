@@ -1,10 +1,10 @@
 name: Score cards supply-chain security
 on:
   # Only the default branch is supported.
-  branch_protection_rule:
+  #branch_protection_rule:
   push:
     branches:
-      - mainz
+      - main
 
 # Declare default permissions as read only.
 permissions: read-all

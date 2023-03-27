@@ -1,14 +1,10 @@
-import 'package:equatable/equatable.dart';
+import 'package:store/business/bloc/base_event.dart';
 
-class LoadingEvent extends Equatable {
-  // ignore: unused_field
-  final bool _loading;
+class LoadingEvent extends BaseEvent {
+  final bool loading;
 
-  // ignore: avoid_positional_boolean_parameters
-  const LoadingEvent(this._loading);
+  LoadingEvent({this.loading = false});
 
   @override
-  List<Object?> get props => [_loading];
-
-  bool get loading => _loading;
+  List<Object?> get props => [loading];
 }

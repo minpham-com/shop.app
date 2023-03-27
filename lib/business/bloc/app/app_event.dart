@@ -1,9 +1,11 @@
-abstract class AppEvent {}
+import 'package:store/business/bloc/base_event.dart';
 
-abstract class AppStarting extends AppEvent {}
+abstract class AppEvent extends BaseEvent {}
 
-abstract class AppStarted extends AppEvent {}
+class AppStarting extends AppEvent {}
 
-abstract class AppFinishing extends AppEvent {}
+class AppStarted extends AppEvent {}
 
-abstract class AppFinished extends AppEvent {}
+class AppFinishing extends AppEvent {}
+
+class AppFinished extends AppEvent {}

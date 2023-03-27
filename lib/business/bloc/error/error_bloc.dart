@@ -1,8 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:store/business/bloc/base_event.dart';
 import 'package:store/business/bloc/error/error_event.dart';
 import 'package:store/business/bloc/error/error_state.dart';
 
-class ErrorBloc extends Bloc<ErrEvent, ErrorState> {
+class ErrorBloc extends Bloc<BaseEvent, ErrorState> {
   ErrorBloc() : super(ErrorState<NullEvent>("", NullEvent())) {
     on<EmergencyEvent>(_emergency);
     on<ErrorEvent>(_error);

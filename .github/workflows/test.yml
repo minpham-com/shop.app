@@ -2,8 +2,10 @@ name: Tests
 on:
   push:
     branches:
-      - develop
-      - mainz
+      - main
+      - develops
+      - production
+      - staging
   pull_request:
 
 # Declare default permissions as read only.

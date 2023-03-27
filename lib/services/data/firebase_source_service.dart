@@ -1,10 +1,10 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:store/data/models/base_model.dart';
+import 'package:store/data/entities/base_object.dart';
 import 'package:store/services/data/base_source_service.dart';
 import 'package:store/services/firebase_service.dart';
 import 'package:store/services/locator_service.dart';
 
-class FirebaseSourceService<T extends BaseModel>
+class FirebaseSourceService<T extends BaseObject>
     implements BaseSourceService<T> {
   final FirebaseService _service = getIt<FirebaseService>();
   late String __endpoint;
@@ -38,7 +38,7 @@ class FirebaseSourceService<T extends BaseModel>
   Future<void> updateOrCreate(String? key, T item) async {
     final DatabaseReference ref = await _getRef();
     final String? keyItem = key ?? ref.child(__endpoint).push().key;
-    final Map<String, Map> updates = {};
+    final Map<String, Map<dynamic, dynamic>> updates = {};
     updates['/$__endpoint/$keyItem'] = item.toMap() as Map<String, dynamic>;
     ref.update(updates);
   }

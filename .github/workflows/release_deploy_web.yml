@@ -40,7 +40,7 @@ jobs:
       
       - name: Generate Internationalizing
         run: flutter gen-l10n
-      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - run: dart run build_runner build --delete-conflicting-outputs
 
       # Build and deploy (by default, to staging).
       - run: flutter build -v web --release

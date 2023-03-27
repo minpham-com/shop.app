@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:store/env/env.dart';
 import 'package:store/services/base_service.dart';
+import 'package:store/services/cookie_service.dart';
 import 'package:store/services/log_service.dart';
-import 'package:store/services/shared_preference_helper.dart';
+import 'package:store/services/shared_preference_service.dart';
 
 class HttpService extends BaseService {
   static final HttpService _instance = HttpService._();
@@ -16,14 +18,36 @@ class HttpService extends BaseService {
   }
 
   // dio instance
-  late final Dio _client;
+  late Dio _client;
   static const String TAG = "HttpService";
   final LogService _log = LogService.getInstance();
-  final SharedPreferenceHelper _helper = SharedPreferenceHelper.getInstance();
+  final SharedPreferenceService _service =
+      SharedPreferenceService.getInstance();
   // injecting dio instance
   Dio setClient(Dio client) {
     _client = client;
     return client;
+  }
+
+  Dio setOptions(BaseOptions options) {
+    _client.options = options;
+    return _client;
+  }
+
+  CacheOptions getCacheOptions() {
+    // Global options
+    return CacheOptions(
+      // A default store is required for interceptor.
+      store: MemCacheStore(),
+      // Returns a cached response on error but for statuses 401 & 403.
+      // Also allows to return a cached response on network errors (e.g. offline usage).
+      // Defaults to [null].
+      hitCacheOnErrorExcept: [401, 403],
+      // Overrides any HTTP directive to delete entry past this duration.
+      // Useful only when origin server has no cache config or custom behaviour is desired.
+      // Defaults to [null].
+      maxStale: const Duration(days: 7),
+    );
   }
 
   Dio getDefaultClient() {
@@ -33,10 +57,14 @@ class HttpService extends BaseService {
         connectTimeout: const Duration(seconds: 15000),
         receiveTimeout: const Duration(seconds: 30000),
         headers: <String, dynamic>{
-          'Content-Type': 'application/json; charset=utf-8'
+          'Content-Type': 'application/json; charset=utf-8',
+          'User-Agent': Env.appName
         });
-    final Dio dio = Dio(options);
 
+    final Dio dio = Dio(options);
+    final cookieManager = CookieService.getInstance().cookieManager;
+    dio.interceptors.add(cookieManager);
+    dio.interceptors.add(DioCacheInterceptor(options: getCacheOptions()));
     dio.interceptors.add(LogInterceptor(
       responseBody: true,
       requestBody: true,
@@ -45,24 +73,28 @@ class HttpService extends BaseService {
       InterceptorsWrapper(onRequest:
           (RequestOptions options, RequestInterceptorHandler handler) async {
         // getting token
-        final String? token = await _helper.accessToken;
+        final String? token = await _service.accessToken;
 
         if (token != null) {
           options.headers.putIfAbsent('Authorization', () => token);
         }
 
         return handler.next(options);
-      }, onResponse: (Response response, ResponseInterceptorHandler handler) {
+      }, onResponse:
+          (Response<dynamic> response, ResponseInterceptorHandler handler) {
         return handler.next(response);
       }, onError: (DioError err, ErrorInterceptorHandler handler) async {
         if (err.response == null) {
           return;
         }
         if (err.response!.statusCode == 401) {
+          //TODO: maybe logout beacause medusa backend use cookie
+          cookieManager.cookieJar.deleteAll();
+          /*
           final bool? res = await refreshToken();
           if (res != null && res) {
             await _retry(err.requestOptions);
-          }
+          }*/
         }
         return handler.next(err);
       }),
@@ -75,19 +107,20 @@ class HttpService extends BaseService {
     return _client;
   }
 
+  /*
   Future<bool?> refreshToken() async {
-    final String? refreshToken = await _helper.refreshToken;
+    final String? refreshToken = await _service.refreshToken;
 
     if (refreshToken != null) {
       try {
-        final Response response = await _client.post<Response>(
+        final Response response = await _client.post<dynamic>(
             "/oauth/refresh_token",
             data: {"refresh_token": refreshToken});
         final Map<String, dynamic> data = response.data as Map<String, dynamic>;
         final String accessToken = data['access_token'] as String;
         final String newRefreshToken = data['refresh_token'] as String;
-        await _helper.saveAccessToken(accessToken);
-        await _helper.saveRefreshToken(newRefreshToken);
+        await _service.saveAccessToken(accessToken);
+        await _service.saveRefreshToken(newRefreshToken);
         return true;
       } catch (err) {
         _log.e("$TAG:refreshToken", [err]);
@@ -109,9 +142,10 @@ class HttpService extends BaseService {
         queryParameters: requestOptions.queryParameters,
         options: options);
   }
+  */
 
   // Get:-----------------------------------------------------------------------
-  Future<Response> get(
+  Future<Response<T>> get<T>(
     String uri, {
     Map<String, dynamic>? queryParameters,
     Options? options,
@@ -119,24 +153,23 @@ class HttpService extends BaseService {
     ProgressCallback? onReceiveProgress,
   }) async {
     try {
-      final Response response = await _client.get<Response>(
+      return _client.get<T>(
         uri,
         queryParameters: queryParameters,
         options: options,
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
       );
-      return response;
-    } catch (e) {
-      _log.e("$TAG:get", [e]);
+    } catch (e, stackTrace) {
+      _log.e("$TAG:get", e, stackTrace);
       rethrow;
     }
   }
 
   // Post:----------------------------------------------------------------------
-  Future<Response> post(
+  Future<Response<T>> post<T>(
     String uri, {
-    dynamic data,
+    Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
     CancelToken? cancelToken,
@@ -144,7 +177,7 @@ class HttpService extends BaseService {
     ProgressCallback? onReceiveProgress,
   }) async {
     try {
-      final Response response = await _client.post<Response>(
+      return _client.post<T>(
         uri,
         data: data,
         queryParameters: queryParameters,
@@ -153,17 +186,16 @@ class HttpService extends BaseService {
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
       );
-      return response;
-    } catch (e) {
-      _log.e("$TAG:post", [e]);
+    } catch (e, stackTrace) {
+      _log.e("$TAG:post", e, stackTrace);
       rethrow;
     }
   }
 
   // Put:-----------------------------------------------------------------------
-  Future<Response> put(
+  Future<Response<T>> put<T>(
     String uri, {
-    dynamic data,
+    Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
     CancelToken? cancelToken,
@@ -171,7 +203,7 @@ class HttpService extends BaseService {
     ProgressCallback? onReceiveProgress,
   }) async {
     try {
-      final Response response = await _client.put<Response>(
+      return _client.put<T>(
         uri,
         data: data,
         queryParameters: queryParameters,
@@ -180,17 +212,16 @@ class HttpService extends BaseService {
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
       );
-      return response;
-    } catch (e) {
-      _log.e("$TAG:put", [e]);
+    } catch (e, stackTrace) {
+      _log.e("$TAG:put", e, stackTrace);
       rethrow;
     }
   }
 
-  // Delete:--------------------------------------------------------------------
-  Future<Response> delete(
+  // Patch:-----------------------------------------------------------------------
+  Future<Response<T>> patch<T>(
     String uri, {
-    dynamic data,
+    Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
     CancelToken? cancelToken,
@@ -198,16 +229,41 @@ class HttpService extends BaseService {
     ProgressCallback? onReceiveProgress,
   }) async {
     try {
-      final Response response = await _client.delete<Response>(
+      return _client.patch<T>(
+        uri,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+      );
+    } catch (e, stackTrace) {
+      _log.e("$TAG:put", e, stackTrace);
+      rethrow;
+    }
+  }
+
+  // Delete:--------------------------------------------------------------------
+  Future<Response<T>> delete<T>(
+    String uri, {
+    Object? data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    try {
+      return _client.delete<T>(
         uri,
         data: data,
         queryParameters: queryParameters,
         options: options,
         cancelToken: cancelToken,
       );
-      return response;
-    } catch (e) {
-      _log.e("$TAG:delete", [e]);
+    } catch (e, stackTrace) {
+      _log.e("$TAG:delete", e, stackTrace);
       rethrow;
     }
   }

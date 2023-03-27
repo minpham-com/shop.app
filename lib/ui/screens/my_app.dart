@@ -12,7 +12,6 @@ import 'package:store/env/app_theme.dart';
 import 'package:store/env/env.dart';
 import 'package:store/ui/routes/routes.dart';
 import 'package:store/ui/screens/home/home.dart';
-import 'package:store/ui/screens/login/login.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -42,9 +41,7 @@ class MyApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            home: context.read<UserBloc>().isLoggedIn
-                ? HomeScreen() //HomeScreen
-                : LoginScreen(), //Login
+            home: const HomeScreen(),
           );
         },
       ),

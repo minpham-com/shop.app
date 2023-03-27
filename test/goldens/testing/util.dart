@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 const mobileSize = Size(540, 960);
 const desktopSize = Size(1280, 850);
@@ -108,16 +107,3 @@ const shrineAssets = [
   AssetImage('diamond.png', package: 'shrine_images'),
   AssetImage('slanted_menu.png', package: 'shrine_images'),
 ];
-
-Future<void> setUpBinding(
-  WidgetTester tester, {
-  Size size = mobileSize,
-  Brightness brightness = Brightness.light,
-}) async {
-  tester.binding.window.physicalSizeTestValue = size;
-  tester.binding.window.devicePixelRatioTestValue = 1.0;
-  tester.binding.window.platformDispatcher.textScaleFactorTestValue = 1.0;
-  tester.binding.window.platformDispatcher.platformBrightnessTestValue =
-      brightness;
-  addTearDown(tester.binding.window.clearAllTestValues);
-}
