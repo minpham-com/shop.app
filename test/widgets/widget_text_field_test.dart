@@ -11,11 +11,12 @@ void main() {
     final Widget widget = MediaQuery(
         data: const MediaQueryData(),
         child: MaterialApp(
-            home: TextFieldWidget(
-                icon: Icons.person,
-                iconColor: Colors.white70,
-                textController: TextEditingController(),
-                errorText: "Error !!!")));
+            home: Scaffold(
+                body: TextFieldWidget(
+                    icon: Icons.person,
+                    iconColor: Colors.white70,
+                    textController: TextEditingController(),
+                    errorText: "Error !!!"))));
     return widget;
   }
 

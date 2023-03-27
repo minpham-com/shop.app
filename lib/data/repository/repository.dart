@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'package:store/services/shared_preference_helper.dart';
+import 'package:store/services/shared_preference_service.dart';
 
 class Repository {
   final String _endpoint;
   // shared pref object
-  final SharedPreferenceHelper _helper = SharedPreferenceHelper.getInstance();
+  final SharedPreferenceService _service =
+      SharedPreferenceService.getInstance();
   // constructor
   Repository(this._endpoint);
   // Login:---------------------------------------------------------------------
@@ -13,20 +14,20 @@ class Repository {
   }
 
   Future<void> saveIsLoggedIn({required bool value}) =>
-      _helper.saveIsLoggedIn(value);
+      _service.saveIsLoggedIn(value);
 
-  Future<bool> get isLoggedIn => _helper.isLoggedIn;
+  Future<bool> get isLoggedIn => _service.isLoggedIn;
 
   // Theme: --------------------------------------------------------------------
   Future<void> changeBrightnessToDark({required bool value}) =>
-      _helper.changeBrightnessToDark(value);
+      _service.changeBrightnessToDark(value);
 
-  Future<bool> get isDarkMode => _helper.isDarkMode;
+  Future<bool> get isDarkMode => _service.isDarkMode;
 
   // Language: -----------------------------------------------------------------
-  Future<void> changeLanguage(String value) => _helper.changeLanguage(value);
+  Future<void> changeLanguage(String value) => _service.changeLanguage(value);
 
-  Future<String?> get currentLanguage => _helper.currentLanguage;
+  Future<String?> get currentLanguage => _service.currentLanguage;
 
   String get endpoint => _endpoint;
 }
